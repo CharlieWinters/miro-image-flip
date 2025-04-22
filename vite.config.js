@@ -18,6 +18,7 @@ const allHtmlEntries = fs
 
 // https://vitejs.dev/config/
 export default defineConfig({
+  base: '/miro-image-flip/',
   build: {
     rollupOptions: {
       input: allHtmlEntries,
