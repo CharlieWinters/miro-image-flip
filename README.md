@@ -82,15 +82,20 @@ Open a board on the same account and the app appears in the toolbar.
 
 ```bash
 npm run build      # static output in dist/
-npm run deploy     # publishes dist/ to the gh-pages branch
 ```
+
+Deployment is automatic: [`.github/workflows/deploy.yml`](./.github/workflows/deploy.yml) builds the app and publishes it to GitHub Pages on every push to `main`. Pull requests run the same build as a check, so a build that can't produce working entry points never reaches `main`. You can also trigger a deploy by hand from the **Actions** tab, and roll back to any earlier deploy from the **Environments** tab.
 
 The published apps run on GitHub Pages:
 
 - `https://charliewinters.github.io/miro-image-flip/horizontal.html`
 - `https://charliewinters.github.io/miro-image-flip/vertical.html`
 
-Those are the **App URL** values set on the two apps above. If you fork this repo, update `base` in [`vite.config.js`](./vite.config.js) to match your own repository name, and set your fork's Pages URLs as the App URLs.
+Those are the **App URL** values set on the two apps above. They never change, so a redeploy reaches everyone who has the app installed — no reinstall, and no staging step either. Expect up to ten minutes before a change is live for a given user, since GitHub Pages serves these files with `cache-control: max-age=600`.
+
+That cache window is also why the build emits **unhashed asset filenames** (see [`vite.config.js`](./vite.config.js)). Each deploy replaces the contents of the site; with hashed names, a browser holding a cached HTML entry point would request a JavaScript file the new deploy had just deleted, 404, and leave the toolbar button silently doing nothing. Stable names always resolve — at worst a user briefly gets the previous build.
+
+If you fork this repo, update `base` in [`vite.config.js`](./vite.config.js) to match your own repository name, set your fork's Pages URLs as the App URLs, and set **Settings → Pages → Source** to **GitHub Actions**.
 
 ## Project structure
 
@@ -100,6 +105,8 @@ Those are the **App URL** values set on the two apps above. If you fork this rep
 ├── vertical.html      // App URL for Vertical Flip
 ├── index.html         // local dev landing page
 ├── app.html           // panel variant with both buttons (not used by the installed apps)
+├── .github/workflows
+│  └── deploy.yml      // builds and publishes to GitHub Pages on push to main
 ├── src
 │  ├── horizontal.js   // horizontal flip, runs on icon:click
 │  ├── vertical.js     // vertical flip, runs on icon:click

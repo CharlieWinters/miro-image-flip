@@ -1,0 +1,55 @@
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Never let two deploys race; a half-applied deploy is a broken app for
+# everyone who has it installed.
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+      - run: npm ci
+      - run: npm run build
+      # The apps are loaded live by every board that has them installed, so
+      # fail the build rather than publish an entry point that can't work.
+      - name: Check the built entry points
+        run: |
+          set -euo pipefail
+          for app in horizontal vertical; do
+            test -f "dist/$app.html"
+            test -f "dist/assets/$app.js"
+            grep -q "assets/$app.js" "dist/$app.html"
+            grep -q "icon:click" "dist/assets/$app.js"
+          done
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: dist
+
+  deploy:
+    if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4
