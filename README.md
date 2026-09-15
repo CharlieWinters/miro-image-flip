@@ -6,6 +6,9 @@ Select one or more images, click the app icon in the board toolbar, and a flippe
 
 It ships as **two separate one-click apps** — *Horizontal Flip* and *Vertical Flip* — so each gets its own toolbar icon and each flip is a single click, with no panel to open.
 
+> [!IMPORTANT]
+> **This is a personal side project, not a Miro product.** It's built and maintained by an individual, and is not made, reviewed, endorsed or supported by Miro. It comes with no warranty and no guarantee that it will keep working. Miro Support can't help with it — please [open an issue](https://github.com/CharlieWinters/miro-image-flip/issues) instead.
+
 ---
 
 ## Install
@@ -16,6 +19,8 @@ It ships as **two separate one-click apps** — *Horizontal Flip* and *Vertical 
 | **Vertical Flip** | Mirrors top ↔ bottom, places the copy below the original | [Install Vertical Flip](https://miro.com/app-install/?response_type=code&client_id=3458764683769120268&redirect_uri=%2Fapp-install%2Fconfirm%2F) |
 
 Install either or both. After installing, open a board and look for the icon in the left-hand toolbar (under **Apps** if the toolbar is collapsed). Installing requires permission to read and write board content — the app only touches the images you have selected.
+
+These are unlisted developer apps published by an individual, not Marketplace apps vetted by Miro, so Miro's install screen will flag them as such. Read the source in this repo before installing, and check with your Miro admin if your team restricts third-party apps.
 
 ---
 
@@ -112,6 +117,8 @@ Those are the **App URL** values set on the two apps above. If you fork this rep
 
 Publishing to the Miro Marketplace: see [`APP_SUBMISSION.md`](./APP_SUBMISSION.md) and the [submission docs](https://developers.miro.com/docs/submit-your-app).
 
-## License
+## License and affiliation
 
-MIT
+MIT.
+
+Miro is a trademark of Miro (RealtimeBoard Inc. dba Miro). This project is an independent, unofficial app built on Miro's public Web SDK and is not affiliated with, authorised by, or sponsored by Miro.
