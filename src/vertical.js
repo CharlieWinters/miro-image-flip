@@ -1,5 +1,3 @@
-import './assets/style.css';
-
 // Function to flip an image vertically
 async function flipImageVertically(imageData) {
     return new Promise((resolve) => {

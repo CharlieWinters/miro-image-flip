@@ -22,6 +22,17 @@ export default defineConfig({
   build: {
     rollupOptions: {
       input: allHtmlEntries,
+      // Stable, unhashed filenames. GitHub Pages serves HTML with
+      // `cache-control: max-age=600`, and each deploy replaces the contents of
+      // the branch. With hashed names, a browser holding a cached HTML entry
+      // point requests an asset that the new deploy just deleted, gets a 404,
+      // and the app silently stops working for up to ten minutes. Stable names
+      // always resolve; the worst case is briefly serving the previous build.
+      output: {
+        entryFileNames: 'assets/[name].js',
+        chunkFileNames: 'assets/[name].js',
+        assetFileNames: 'assets/[name][extname]',
+      },
     },
   },
   server: {
